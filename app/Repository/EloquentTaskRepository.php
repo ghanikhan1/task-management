@@ -24,9 +24,21 @@ class EloquentTaskRepository implements TaskRepository
         $task->update($data);
         return $task;
     }
-        public function deleteTask($id)
+    
+    public function deleteTask($id)
     {
         $task = Task::findOrFail($id);
         return $task->delete();
     }
+    
+    public function getTasksByStatus($status)
+    {
+        return Task::where('status', $status)->with('category', 'user')->get();
+    }
+
+    public function getTasksBySearch($search)
+    {
+        return Task::where('title' , 'like', '%' . $search . '%')->get();
+    }
+
 }

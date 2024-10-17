@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Service\TaskService;  // Ensure correct namespace (Services, not Service)
+use App\Models\Category;
+use App\Service\TaskService;
 
 class TaskController extends Controller
 {
@@ -17,9 +17,13 @@ class TaskController extends Controller
     }
 
     // Display a list of tasks
-    public function index()
+    public function index(Request $request)
     {
-        $tasks = $this->taskService->getAllTasks();
+        // $tasks = $this->taskService->getAllTasks();
+        $status = $request->query('status');
+        $search = $request->query('search');
+
+        $tasks = $this->taskService->getTasksByStatus($status, $search);
         return view('tasks.index', compact('tasks'));
     }
 
@@ -27,7 +31,6 @@ class TaskController extends Controller
     public function create()
     {
         $categories = Category::all();  // Fetch all categories for the dropdown
-        //  dd($categories);
         return view('tasks.create', compact('categories'));
     }
 

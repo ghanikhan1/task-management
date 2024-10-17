@@ -33,13 +33,26 @@ class TaskService
         return $this->taskRepository->updateTask($id, $data);
     }
     public function getTaskById($id)
-{
-    return Task::findOrFail($id);
-}
+    {
+        return Task::findOrFail($id);
+    }
 
     public function deleteTask($id)
     {
         return $this->taskRepository->deleteTask($id);
     }
+
+    public function getTasksByStatus($status, $search)
+    {
+        if ($status) {
+            return $this->taskRepository->getTasksByStatus($status);
+        }
+        if ($search) {
+            return $this->taskRepository->getTasksBySearch($search);
+        }
+
+    return $this->taskRepository->getAllTasks();
+}
+
 
 }
